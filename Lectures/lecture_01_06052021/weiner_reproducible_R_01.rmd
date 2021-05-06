@@ -48,7 +48,66 @@ assignInNamespace("num_colors", num_colors, pos="package:crayon")
 library(tidyverse)
 ```
 
-## Reproducibility crisis in science ✪
+## Berlin Institute of Health
+
+.pull-left[
+
+ * Institute for translational and precision medicine
+
+ * Founded in 2013 by Max Delbrück Center for
+   Molecular Medicine and Charité – a university hospital affiliated with
+   both Humboldt University and Free University Berlin.
+
+ * Since 2020 a part of the Charité
+
+]
+
+
+![](images/charite.jpg)
+
+
+???
+
+Charité – over 15,000 employes
+
+
+---
+
+## A few words about myself
+
+.pull-left[
+
+Short bio:
+
+ * PhD in molecular biology 
+ * 2003-2009 evolutionary bioinformatics (sequence analyses, phylogeny, teaching)
+ * 2009-2019 Max Planck for Infection Biology – tuberculosis, Omics, statistics, clinical trials
+ * Since 2019 at the Core Unit for Bioinformatics, BIH, Charité
+
+Areas of expertise:
+
+ * biostatistics, R
+ * functional analysis
+ * evolutionary biology
+]
+
+.pull-right[
+
+
+
+]
+
+---
+
+## Organisatory matters
+
+
+
+
+---
+
+
+## Reproducibility crisis in science
 
 ---
 
