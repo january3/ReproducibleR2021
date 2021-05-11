@@ -77,6 +77,25 @@ a &lt;- 1:10
 
 ---
 
+## Using R as a git[hub] interface
+
+If you want to download all lecture materials and update it easily when new
+lectures come in, do the following:
+
+  * Start R studio `\(\rightarrow\)` File `\(\rightarrow\)` New project
+    `\(\rightarrow\)` Version Control `\(\rightarrow\)` Git 
+  * Enter `https://github.com/january3/ReproducibleR2021` as the
+    "Repository URL"
+  * Pay attention to the "Create project as subdirectory of" entry field,
+    so that you know where you are saving the project.
+  * Click "Create Project". Rstudio will download all available materials.
+  * When you want to update / check for updates, go to the "git" tab in the
+    top right panel and press the blueish "down" arrow.
+
+ 
+
+---
+
 ## A few notes on R
 
  * Why programming?
@@ -95,10 +114,10 @@ a &lt;- 1:10
   * Note: there are no "singletons", everything is a vector (but maybe of
     length one)
  * vectors and multiple assignment: `a &lt;- c(1, 7, 9)`
- * operators: 
+ * some of the operators: 
    * `3 + 5` 
    * `a * 7` 
-   * `5 / /` 
+   * `5 / 7` 
    * `5 %% 7` 
    * `5 %/% 7` 
    * `5^7`
@@ -324,6 +343,8 @@ T-test results:
 ---
 
 ## Simulating effect sizes
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
