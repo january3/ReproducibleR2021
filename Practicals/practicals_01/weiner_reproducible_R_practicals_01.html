@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Practicals 01: Working with R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="January Weiner" />
+    <meta name="date" content="2021-05-11" />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="files/cubi-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="files/style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Practicals 01: Working with R
+## Reproducible science with R
+### January Weiner
+### 2021-05-11
+
+---
+
+
+
+
+
+
+
+## Introduction
+
+**Aims:**
+
+ * Give you a jump start
+ * Give you good habits
+ * Proceed along a helix
+
+---
+
+## Example R session
+
+---
+
+## Workspaces
+
+ Workspace is basically a folder which contains a few special files in
+ which R stores project-specific data.
+
+  * `Rhistory` (hidden file) – a text file containing all commands that you
+    have issued
+  * `Rdata` (hidden file) – a binary file containing your workspace (all
+    variables created)
+  * `&lt;filename&gt;.Rproj` – Rstudio R project file containing some
+    rstudio-specific settings (text file)
+  * Anything else should be save by you
+
+---
+
+## Exercise
+
+  * Start R studio `\(\rightarrow\)` File `\(\rightarrow\)` New project
+    `\(\rightarrow\)` New directory `\(\rightarrow\)` New project and create a new
+    project.
+  * Examine the Files pane (lower right); what does it indicate?
+  * Try to open the ".Rproj" file in a text editor. 
+  * Go to File `\(\rightarrow\)` New File `\(\rightarrow\)` `\(\rightarrow\)` R Script
+    to create a new R script.
+  * In the new file, write a simple R statement, for example:
+
+```
+a &lt;- 1:10
+```
+
+   * Press Ctrl/Cmd-Enter. 
+   * What happens? What do you see in the console? 
+   * What do you see under "Environment" on the top right?
+
+---
+
+## A few notes on R
+
+ * Why programming?
+ * Why R?
+ * Alternatives: Python, matlab, other statistical languages
+ * R vs matlab
+ * "There is more than one way of doing it" (but one way will usually be
+   optimal)
+
+---
+
+## R language basics (reminder)
+
+ * Get help with `?` or `help.search`
+ * Assignment and variables: `a &lt;- 2` or `myBigVar &lt;- "test"`
+  * Note: there are no "singletons", everything is a vector (but maybe of
+    length one)
+ * vectors and multiple assignment: `a &lt;- c(1, 7, 9)`
+ * operators: 
+   * `3 + 5` 
+   * `a * 7` 
+   * `5 / /` 
+   * `5 %% 7` 
+   * `5 %/% 7` 
+   * `5^7`
+   * operators often are "vectorized", that is they work with vectors:
+      * `c(1, 5, 7) * 8`
+ * functions: `sum(c(1, 2, 3))`
+   * basically everything is a function, even the operators
+
+---
+
+## Exercises (reminder)
+
+ * create variables: a string, a number using the `&lt;-` operator
+   * how to create the variables?
+   * how to view the variables?
+ * what does `1:5` do?
+ * what happens when you add a number to a vector? (i.e. `c(3, 1, 4) + 5`)
+ * what happens when you multiply a vector with a number?
+ * what happens when you add two vectors?
+
+---
+
+## R language basics (reminder)
+
+R data types:
+
+ * vector (character, integer, numeric, logical, factor)
+
+    * constructing: with `c` (combine values): `c(1, 2, 5)`
+    * accessing elements: `myvector[1]`, `myvector[c(1, 2, 5)]`
+
+--
+
+ * matrix (character, integer, numeric, logical, factor)
+
+   * accessing elements with `mtx[ row, column ]`
+
+--
+
+ * lists: can hold multiple types, can be named
+
+    * accessing elements:
+
+       * by number, e.g. `mylist[[1]]`
+
+       * by name, e.g. `mylist[["element name"]]`
+
+       * using the `$` shortcut: `mylist$some_name`
+
+
+---
+
+## R language basics (reminder)
+
+R data types:
+
+
+ * data frames (and such like): special type of lists
+    * columns are elements and can be accessed exactly like elements of a
+      list
+    * in addition, matrix-style `[` operator is defined, but: warning! it
+      works slightly differently!
+
+---
+
+## R language basics (reminder)
+
+ * Use the `matrix` function to create a matrix with 5 rows and 2 columns,
+   filled with random numbers (use `rnorm` to generate random numbers).
+ * convert the matrix to a data frame using `as.data.frame`
+ * Add a column with identifiers – first five letters of the alphabet (you
+   can use the predefined vector `LETTERS` for it)
+ * convert the data frame back to the matrix with `data.matrix`. 
+ * What is the value type of the new matrix? (use `class` for this)
+ 
+
+---
+
+## R as a functional language
+
+ * Everything is a function (even "operators"!)
+ * Functional languages and loops do not mix
+ * 99% of what you can do with loops you can do better with another
+   function
+
+---
+
+## Example: calculating 100 random distributions 
+
+**Task:** Generate 100 vectors, each with 10 random numbers. For each
+vector, calculate the mean and SD. Keep the vectors.
+
+--
+
+.pull-left[
+
+```r
+samples &lt;- list()
+means   &lt;- c()
+sds     &lt;- c()
+for(i in 1:100) {
+  samples[i] &lt;- rnorm(10, mean=1, sd=2)
+  means[i]   &lt;- mean(samples[i])
+  sds[i]     &lt;- sd(samples[i])
+}
+```
+]
+
+--
+
+.pull-right[
+
+```r
+samples &lt;- replicate(100, rnorm(10, mean=1, sd=2))
+means   &lt;- sapply(samples, mean)
+sds     &lt;- sapply(samples, sd)
+```
+
+]
+
+(note: `lapply` returns always a list, `sapply` returns whatever the hell
+it thinks it should. Better functions in `tidyverse`)
+
+---
+
+## Exercise: basic use of sapply and lapply
+
+ 1. Use `sample` to generate a vector of length 150 containing random
+    numbers from 20 to 500.
+ 2. Apply the `lapply` function to the vector from (1.) to generate 50
+    vectors, each of a random length from 20 to 500.
+ 3. Apply the `sapply` function to the result of (2.) to calculate the
+    means and SD's of the 150 vectors.
+ 4. Use `plot(x, y)` function to plot the means vs vector length (x should
+    be the vector from (1.), and y should be the result from (3))
+
+
+---
+
+
+## Effect sizes: Does astrology work?
+
+Astrology: date of birth can be used to predict our physical and mental
+abilities.
+
+Can date of birth be used to predict our height?
+
+---
+
+## Effect sizes: Does astrology work?
+
+.center[
+![:scale 60%](images/astrology_1.png)
+]
+
+.myfootnote[
+*Weber GW, Prossinger H, Seidler H. Height depends on month of birth.
+Nature. 1998 Feb;391(6669):754-5.*
+]
+
+---
+
+## Effect sizes: Does astrology work?
+
+
+.center[
+![:scale 60%](images/astrology_2.png)
+]
+
+.myfootnote[
+*Weber GW, Prossinger H, Seidler H. Height depends on month of birth.
+Nature. 1998 Feb;391(6669):754-5.*
+]
+
+---
+
+## Effect sizes: Does astrology work?
+
+ * The observed effect was in the range of 6 mm
+ * The standard deviation for human population is ~ 70 mm
+ * Other factors (genetic, nutrition) have a much greater effect
+ * Simulated comparison (N=100000):
+
+.center[
+![](weiner_reproducible_R_practicals_01_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Effect sizes: Does astrology work?
+
+ * The observed effect was in the range of 6 mm
+ * The standard deviation for human population is ~ 70 mm
+ * Other factors (genetic, nutrition) have a much greater effect
+ * Simulated comparison (N=100000), as a boxplot:
+
+.pull-left[
+![](weiner_reproducible_R_practicals_01_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+T-test results:
+
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  df$Height by df[[2]]
+## t = 19.644, df = 2e+05, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  0.5539940 0.6767977
+## sample estimates:
+##   mean in group April mean in group October 
+##              177.2954              176.6800
+```
+
+`\(\Rightarrow\)` Differences are statistically significant!
+
+]
+
+---
+
+## Simulating effect sizes
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="files/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -52,3 +52,13 @@ h3, h2, h1 {
   background-color: #000000;
   background-size: contain;
 }
+
+.mysmall {
+  font-size:75%;
+}
+
+.myfootnote {
+  font-size:80%;
+  position: absolute;
+  bottom: 0px;
+}
