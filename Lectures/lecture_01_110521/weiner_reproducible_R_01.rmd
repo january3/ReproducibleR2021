@@ -259,9 +259,20 @@ Nature. 2012 Mar;483(7391):531-3.*
 
 ## Reasons for the reproducibility crisis:<br>Misunderstanding and misusing of statistics
 
+--
+
  * file drawer (suppresing non-significant results)
+
+--
+
  * HARKing: Hypothesis After Results are Known
+
+--
+
  * p-hacking / fishing / "researchers degrees of freedom"
+
+--
+
  * "Garden of forking paths" (Gelman)
 
 
@@ -279,6 +290,11 @@ What is a p-value?
 ---
 class:empty-slide,myinverse
 background-image:url(images/torturedata.jpg)
+
+???
+
+Stanisław Lem: "From strawberries under torture one may extract all sorts of
+things."
 
 ---
 class:empty-slide,myinverse
@@ -328,10 +344,6 @@ Nov;22(11):1359-66.*
 ![](images/pval_th_distribution.png)
 ]
 
-.pull-right[
-![](images/pval_distribution.png)
-]
-
 .myfootnote[
 left: *Head ML, Holman L, Lanfear R, Kahn AT, Jennions MD. The extent and
 consequences of p-hacking in science. PLoS Biol. 2015 Mar
@@ -340,6 +352,13 @@ consequences of p-hacking in science. PLoS Biol. 2015 Mar
 right: *Masicampo EJ, Lalande DR. A peculiar prevalence of p values just below 0.05. 
 Quarterly journal of experimental psychology. 2012 Nov;65(11):2271-9.*
 
+]
+
+
+--
+
+.pull-right[
+![](images/pval_distribution.png)
 ]
 
 
@@ -383,21 +402,6 @@ corrected for multiple testing? Etc., etc., etc.
 ## Lack of transparency leads to different results
 
 ![](images/effect_sizes.png)
-
-
----
-
-## Hypothesis testing in science
-
- * Both $H_0$ and $H_1$ make certain assumptions like normality. The only
-   difference is in the effect; usually, $H_0$ assumes no effect, $H_1$
-   assumes that there is an (unknown) effect
- * The reason why we use p-values calculated based on $H_0$ is *that they
-   are easy to calculate analytically* (i.e., without a computer).
-
----
-class:empty-slide,myinverse
-background-image:url(images/pregnant.jpg)
 
 ---
 
@@ -505,108 +509,6 @@ g1 + scale_y_continuous(trans="log10")
 ```
 ]
 
----
-class:empty-slide,myinverse
-background-image:url(images/dogs.jpg)
-## Correlation and causation ✪
-
-.center[
-![:scale 60%](images/nobelprize_chocolate.png)
-]
-
----
-
-## Correlation and causation
-
-.center[
-![:scale 60%](images/ie_murders.png)
-]
-
-
----
-
-## Correlation and causation
-
-.center[
-![:scale 60%](images/pirates.png)
-]
-
----
-
-## Correlation and causation
-
- * The Japanese eat very little fat and suffer fewer heart attacks than the British or Americans.
-
---
-
- * The French eat a lot of fat and also suffer fewer heart attacks than the British or Americans.
-
---
-
- * The Japanese drink very little red wine and suffer fewer heart attacks than the British or Americans.
-
---
-
- * The Italians drink excessive amounts of red wine and also suffer fewer heart attacks than the British or Americans.
-
---
-
- * The Germans drink a lot of beer and eat lots of sausages and fats and suffer fewer heart attacks than the British or Americans.
-
---
-
- **Conclusion:** Eat and drink what you like. Speaking English is what kills you.
-
---
-
-(actually: most of the facts above are **untrue!**)
-
----
-
-## Correlation and causation
-
-Say, you observe that people who express certain behavior (**B**) also tend to
-succumb to a certain disease (**D**). Several explanations are possible:
-
- * **B** causes **D**
- * There is a common factor that causes both **D** and **B** 
-    * Predisposition to **D** causes **B** 
-    * Predisposition to **B** is linked with predisposition to **D**
-
-Should we dismiss **B** as a cause for **D**?
-
----
-class:empty-slide,myinverse
-background-image:url(images/cigarettes.png)
-
-
----
-
-## Correlation and causation
-
-.pull-left[
-
-![](images/fisher.gif)
-
-Ronald A. Fisher
-
-]
-
-.pull-right[
-
-"Is it
-possible, then, that lung cancer—that is to
-say, the pre-cancerous condition which
-must exist and is known to exist for years
-in those who are going to show overt lung
-cancer—is one of the causes of smoking
-cigarettes? I don't think it can be excluded."
-
-(Fisher RA. *Cigarettes, cancer and statistics*. Centen
-Rev 1958;2:151-66.)
-
-
-]
 
 ---
 
@@ -642,28 +544,28 @@ experiencing.
 ![](images/salmon_2.png)
 
 ]
----
-
-## What can we do as scientists? ✪
-
- * registered studies, SOPs etc.: plan and publish the analysis before
-   performing it
- * be as transparent as possible
-    * publish data
-    * publish methods as code on github (or similar)
- * learn statistics
- * KILL YOUR DARLINGS
-
 
 ---
 
-## What can we do as non-scientists? ✪
+## What you will learn here and how that will help
 
- * Beware of the hype
- * Always check the sources
- * Learn how to read scientific papers
- * Confront the sources (there is always another opinion)
- * Learn statistics
+.pull-left[
+![](images/Rlogo.svg)
+]
+
+.pull-right[
+
+ * Writing reproducible and communicative analyses
+
+ * Using markdown for your everyday needs
+ 
+ * Tools for transparent and reproducible research (git, github, pipelines, containers)
+
+ * Get a jump start on R – which makes reproducible research much easier
+   and is a great statistical analysis language
+
+]
+
 
 ---
 
@@ -679,3 +581,7 @@ experiencing.
 
  * One way or the other, you will have to learn it
 
+
+---
+class:empty-slide,myinverse
+background-image:url(images/plansza.png)

@@ -142,11 +142,8 @@ computers in research that they invented a new word for it.
 
  * Reproducibility in science
  * Using R to take care of a *small bit* of a larger issue
+ * Jump-starting on R/Rstudio
 
-
----
-
-## Reproducibility crisis in science
 
 ---
 
@@ -258,15 +255,28 @@ Nature. 2012 Mar;483(7391):531-3.*
 
 ## Reasons for the reproducibility crisis:&lt;br&gt;Misunderstanding and misusing of statistics
 
+--
+
  * file drawer (suppresing non-significant results)
+
+--
+
  * HARKing: Hypothesis After Results are Known
+
+--
+
  * p-hacking / fishing / "researchers degrees of freedom"
+
+--
+
  * "Garden of forking paths" (Gelman)
 
 
 ---
 
 ## Misunderstanding the p-values
+
+What is a p-value?
 
 
 ---
@@ -276,6 +286,11 @@ Nature. 2012 Mar;483(7391):531-3.*
 ---
 class:empty-slide,myinverse
 background-image:url(images/torturedata.jpg)
+
+???
+
+Stanisław Lem: "From strawberries under torture one may extract all sorts of
+things."
 
 ---
 class:empty-slide,myinverse
@@ -325,10 +340,6 @@ Nov;22(11):1359-66.*
 ![](images/pval_th_distribution.png)
 ]
 
-.pull-right[
-![](images/pval_distribution.png)
-]
-
 .myfootnote[
 left: *Head ML, Holman L, Lanfear R, Kahn AT, Jennions MD. The extent and
 consequences of p-hacking in science. PLoS Biol. 2015 Mar
@@ -337,6 +348,13 @@ consequences of p-hacking in science. PLoS Biol. 2015 Mar
 right: *Masicampo EJ, Lalande DR. A peculiar prevalence of p values just below 0.05. 
 Quarterly journal of experimental psychology. 2012 Nov;65(11):2271-9.*
 
+]
+
+
+--
+
+.pull-right[
+![](images/pval_distribution.png)
 ]
 
 
@@ -380,26 +398,6 @@ corrected for multiple testing? Etc., etc., etc.
 ## Lack of transparency leads to different results
 
 ![](images/effect_sizes.png)
-
-
----
-
-## Hypothesis testing in science
-
-
----
-
-## Hypothesis testing in science ✪
-
- * Both `\(H_0\)` and `\(H_1\)` make certain assumptions like normality. The only
-   difference is in the effect; usually, `\(H_0\)` assumes no effect, `\(H_1\)`
-   assumes that there is an (unknown) effect
- * The reason why we use p-values calculated based on `\(H_0\)` is *that they
-   are easy to calculate analytically* (i.e., without a computer).
-
----
-class:empty-slide,myinverse
-background-image:url(images/pregnant.jpg)
 
 ---
 
@@ -489,223 +487,6 @@ How many (scientific) hypotheses we are testing are really correct?
 ![](weiner_reproducible_R_01_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
 ]
 
----
-class:empty-slide,myinverse
-background-image:url(images/dogs.jpg)
-
----
-
-## Effect sizes: Does astrology work?
-
-Astrology: date of birth can be used to predict our physical and mental
-abilities.
-
-Can date of birth be used to predict our height?
-
----
-
-## Effect sizes: Does astrology work?
-
-.center[
-![:scale 70%](images/astrology_1.png)
-]
-
----
-
-## Effect sizes: Does astrology work?
-
-
-.center[
-![:scale 70%](images/astrology_2.png)
-]
-
----
-
-## Effect sizes: Does astrology work?
-
- * The observed effect was in the range of 6 mm
- * The standard deviation for human population is ~ 70 mm
- * Other factors (genetic, nutrition) have a much greater effect
- * Simulated comparison (N=100000):
-
-.center[
-![](weiner_reproducible_R_01_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
-]
-
----
-
-## Effect sizes: Does astrology work?
-
- * The observed effect was in the range of 6 mm
- * The standard deviation for human population is ~ 70 mm
- * Other factors (genetic, nutrition) have a much greater effect
- * Simulated comparison (N=100000), as a boxplot:
-
-.pull-left[
-![](weiner_reproducible_R_01_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
-]
-
-.pull-right[
-T-test results:
-
-&lt;pre class="r-output"&gt;&lt;code&gt;## 
-## 	Welch Two Sample t-test
-## 
-## data:  df$Height by df[[2]]
-## t = 18.982, df = 2e+05, p-value &amp;lt; 2.2e-16
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  0.5321488 0.6546932
-## sample estimates:
-##   mean in group April mean in group October 
-##              177.3040              176.7106
-&lt;/code&gt;&lt;/pre&gt;
-
-`\(\Rightarrow\)` Differences are statistically significant!
-
-]
-
----
-
-## Bottom line ✪
-
- * p-value is a part of scientific *language*. Participating in
-   scientific communication (reading and writing papers) is dangerous if
-   you do not understand what it means.
-
---
-
- * p-values never tell us about the probability of `\(H_1\)`
-
---
-
- * p-values are meaningless when we reject `\(H_0\)`! They refer to an
-   alternate universe in which we assume that `\(H_0\)` is true
-
---
-
- * p-values can be "extremely significant" (incorrect phrase!), but the
-   effect may still be very small. "Statistically significant" is not the
-   same as "significant".
-
---
-
- * p-values are calculated given certain assumptions (the null hypothesis, `\(H_0\)`), and not
-   "randomness". This can lead to errors if these assumptions are not met.
-   Examples: independence, normality
-
---
-
- * Absence of evidence (i.e. significance) is not evidence of absence (of
-   the effect). That means: lack of statistical significance is not
-   *evidence* that there is no effect. 
-
---
-
- * p-value is a *tool*. Like any tool, it can be incorrectly used. It will
-   not make a decision for you. 
-
----
-
-## Correlation and causation ✪
-
-.center[
-![:scale 60%](images/nobelprize_chocolate.png)
-]
-
----
-
-## Correlation and causation ✪
-
-.center[
-![:scale 60%](images/ie_murders.png)
-]
-
-
----
-
-## Correlation and causation ✪
-
-.center[
-![:scale 60%](images/pirates.png)
-]
-
----
-
-## Correlation and causation
-
- * The Japanese eat very little fat and suffer fewer heart attacks than the British or Americans.
-
---
-
- * The French eat a lot of fat and also suffer fewer heart attacks than the British or Americans.
-
---
-
- * The Japanese drink very little red wine and suffer fewer heart attacks than the British or Americans.
-
---
-
- * The Italians drink excessive amounts of red wine and also suffer fewer heart attacks than the British or Americans.
-
---
-
- * The Germans drink a lot of beer and eat lots of sausages and fats and suffer fewer heart attacks than the British or Americans.
-
---
-
- **Conclusion:** Eat and drink what you like. Speaking English is what kills you.
-
---
-
-(actually: most of the facts above are **untrue!**)
-
----
-
-## Correlation and causation
-
-Say, you observe that people who express certain behavior (**B**) also tend to
-succumb to a certain disease (**D**). Several explanations are possible:
-
- * **B** causes **D**
- * There is a common factor that causes both **D** and **B** 
-    * Predisposition to **D** causes **B** 
-    * Predisposition to **B** is linked with predisposition to **D**
-
-Should we dismiss **B** as a cause for **D**?
-
----
-class:empty-slide,myinverse
-background-image:url(images/cigarettes.png)
-
-
----
-
-## Correlation and causation
-
-.pull-left[
-
-![](images/fisher.gif)
-
-Ronald A. Fisher
-
-]
-
-.pull-right[
-
-"Is it
-possible, then, that lung cancer—that is to
-say, the pre-cancerous condition which
-must exist and is known to exist for years
-in those who are going to show overt lung
-cancer—is one of the causes of smoking
-cigarettes? I don't think it can be excluded."
-
-(Fisher RA. *Cigarettes, cancer and statistics*. Centen
-Rev 1958;2:151-66.)
-
-
-]
 
 ---
 
@@ -741,28 +522,28 @@ experiencing.
 ![](images/salmon_2.png)
 
 ]
----
-
-## What can we do as scientists? ✪
-
- * registered studies, SOPs etc.: plan and publish the analysis before
-   performing it
- * be as transparent as possible
-    * publish data
-    * publish methods as code on github (or similar)
- * learn statistics
- * KILL YOUR DARLINGS
-
 
 ---
 
-## What can we do as non-scientists? ✪
+## What you will learn here and how that will help
 
- * Beware of the hype
- * Always check the sources
- * Learn how to read scientific papers
- * Confront the sources (there is always another opinion)
- * Learn statistics
+.pull-left[
+![](images/Rlogo.svg)
+]
+
+.pull-right[
+
+ * Writing reproducible and communicative analyses
+
+ * Using markdown for your everyday needs
+ 
+ * Tools for transparent and reproducible research (git, github, pipelines, containers)
+
+ * Get a jump start on R – which makes reproducible research much easier
+   and is a great statistical analysis language
+
+]
+
 
 ---
 
@@ -778,6 +559,10 @@ experiencing.
 
  * One way or the other, you will have to learn it
 
+
+---
+class:empty-slide,myinverse
+background-image:url(images/plansza.png)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
