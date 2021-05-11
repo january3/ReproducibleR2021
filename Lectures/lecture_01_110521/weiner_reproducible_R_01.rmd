@@ -1,5 +1,5 @@
 ---
-title: "Lecture 1: Reproducible Bioinformatics"
+title: "Lecture 1: Reproducibility crisis"
 subtitle: "R for reproducible science"
 author: "January Weiner"
 date: "`r Sys.Date()`"
