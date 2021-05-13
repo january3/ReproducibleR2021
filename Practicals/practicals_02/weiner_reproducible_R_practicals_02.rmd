@@ -1,0 +1,212 @@
+---
+title: "Practicals 01: Working with R"
+subtitle: "Reproducible science with R"
+author: "January Weiner"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    self-contained: true
+    css: ["default", "files/cubi-fonts.css", "files/style.css" ]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+      ratio: "16:9"
+      beforeInit: "files/macros.js"
+toc: no
+---
+
+```{r,echo=FALSE}
+## Set default options for the knitr RMD processing
+knitr::opts_chunk$set(echo=FALSE,warning=FALSE,message=FALSE,fig.width=5,fig.height=5,cache=TRUE,autodep=TRUE, results="hide")
+```
+
+```{r libraries,cache=FALSE,echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
+library(tidyverse)
+library(cowplot)
+```
+
+## Repetitorium of day 1: Example
+
+First, complete a short test:
+[https://forms.gle/btAkm8qYfA6fuF3i8](https://forms.gle/btAkm8qYfA6fuF3i8)
+
+---
+
+## Repetitorium of day 1: Example
+
+There is a lake in a garden. Every day, the water lilies cover twice as
+much area as the previous day. On the first day, the water lilies cover
+1/100th of the area of the lake.
+
+ * What is the formula to calculate the area covered by the water lilies on
+   day n? (pen and paper, not in Rstudio!)
+ * assign days 1 ... 10 to variable x. Now assign the fraction of the area
+   covered by water lilies on day n to variable y
+ * plot x vs y (use the simple `plot()` function)
+ * When will the half of the area be covered by water lilies? Use `abline(h=.5)`
+   (what does it do?) to show a graphical solution
+ * What is the fraction on day 3? Hint: what does `y[3]` do?
+ * Speaking of which, what dows `y[4:5]` do? (just try it!)
+
+
+## Exercise
+
+ * Make the plot yourself.
+ * use 'col' parameter of `plot` and a color name (e.g. "red") to change
+   the color of the line (`plot(..., col="red")`)
+ * what if each day the lilies cover a fraction of area that is 1.5 the
+   fraction of area on the previous day?
+ * Use `lines(x, y)` function to put a second line on the plot
+
+
+## Creating your own functions for fun and profit
+
+ * If you have to write something more than twice, you should turn it into
+   a function!
+ * R is a *functional* language
+
+## Creating a function
+
+```{r eval=FALSE,echo=TRUE}
+#' Function name
+#' Function description
+some_name <- function(param1, param2=2) {
+
+## code comment
+# <your code goes in here>
+
+}
+```
+
+## Example
+
+```{r eval=FALSE,echo=TRUE}
+
+#' Function for pond calculation
+pond_surface_covered <- function(init_pond_surface, day=0) {
+
+  ## "**" and "^" do the same thing
+  ret <- init_pond_surface * 2^day
+
+  return(ret)
+}
+```
+
+
+## Example
+
+
+```{r eval=FALSE,echo=TRUE}
+
+#' Generate a random sample from a given distribution
+#' Usage: randsamp(n) where n is the size of the sample
+
+randsamp <- function(n, d="uniform") {
+
+  if(d == "uniform") {
+    ret <- runif(n)
+  } else if(d == "normal") {
+    ret <- rnorm(n)
+  } else {
+    stop("I don't know this distribution!")
+  }
+
+  return(ret)
+}
+```
+
+## Exercise 2.1
+
+Take the function above and add a new option: the binomial distribution.
+Which function can give you that? Search for a suitable function.
+
+Note: binomial distribution is essentially what you get when you throw a
+coin a number of times and add the results (1 for heads, 0 for tails). 
+This function requires two more parameters: number of "coin tosses"
+and probability of "heads". You need to adapt the code accordingly: choose
+something meaningful, e.g. size=1 and prob=0.5 to simulate a single fair
+coin toss.
+
+
+# Reading and writing data
+
+## Reading data
+
+Main data types you will encounter:
+
+---------------------------- ------------------------------- --------------------------
+Data type                    Function                        Notes
+---------------------------- ------------------------------- --------------------------
+TSV / TAB separated values   `read_table()`                  Tab is `\t`.
+                                                             A very general and 
+                                                             customizable function
+
+CSV / comma separated        `read_csv()`                    a wrapper around
+                                                             `read.table()`
+
+XLS (old Excel)              `read_xls()`                    Just don't use it.
+                             `read_excel()`                  From the
+                                                             `readxl`
+                                                             package.
+
+XLSX (new Excel)             `read_xlsx()`                   From the `readxl` package.
+                             `read_excel()`                  You need to
+                                                             provide the
+                                                             sheet number
+                                                             you wish to
+                                                             read. 
+                                                             Note: returns a tibble,
+                                                             not a data frame! 
+---------------------------- ------------------------------- --------------------------
+
+
+## Reading with GUI
+
+You can use the "Files" pane to import some data types. When you do, you
+get an import dialog to choose certain options; but then, the actual
+command is copied to your console – you can copy and paste it and it will
+work exactly the same.
+
+## Tibbles / readxl
+
+tibbles belong to the tidyverse. They are nice to work with and very
+useful, but a bit different from regular data frames. To convert a tibble
+to a data frame, you can do
+
+```{r eval=FALSE}
+mydataframe <- as.data.frame(read_xlsx("file.xlsx"))
+```
+
+One crucial difference between tibble and data frame is that `tibble[ , 1 ]` 
+returns a tibble, while `dataframe[ , 1]` returns a vector. The second
+crucial difference is that it does not support row names (on purpose!).
+
+## Cleaning up data
+
+`unique` returns the unique values in a vector. Use it to check the
+correctness of the columns.
+
+Use `class()` to make sure that the columns are what you think they are.
+
+Use `summary()` to gain an overview of the data.
+
+Convert with `factor` when necessary (and only then).
+
+Also, you can use my function `colorDF_summary` from the `colorDF` package
+(install from CRAN: `install.packages("colorDF")`)
+
+## Excercise 2.2
+
+Read, inspect and correct (if reasonable) the following files:
+
+ * `cars.xlsx`
+ * `iris.csv`
+ * `expression_data_vaccination_example.xlsx` (large!)
+
+The function `readxl_example("deaths.xls")` returns a file name. Read this
+file. How can you omit the lines at the top and at the bottom of the file?
+(hint: `?read_xls`). How can you force the date columns to be interpreted
+as dates and not numbers?
+
+
