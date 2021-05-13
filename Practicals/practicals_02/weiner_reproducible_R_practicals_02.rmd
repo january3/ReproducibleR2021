@@ -49,6 +49,7 @@ much area as the previous day. On the first day, the water lilies cover
  * What is the fraction on day 3? Hint: what does `y[3]` do?
  * Speaking of which, what dows `y[4:5]` do? (just try it!)
 
+---
 
 ## Exercise
 
@@ -59,12 +60,15 @@ much area as the previous day. On the first day, the water lilies cover
    fraction of area on the previous day?
  * Use `lines(x, y)` function to put a second line on the plot
 
+---
 
 ## Creating your own functions for fun and profit
 
  * If you have to write something more than twice, you should turn it into
    a function!
  * R is a *functional* language
+
+---
 
 ## Creating a function
 
@@ -78,6 +82,8 @@ some_name <- function(param1, param2=2) {
 
 }
 ```
+
+---
 
 ## Example
 
@@ -93,6 +99,7 @@ pond_surface_covered <- function(init_pond_surface, day=0) {
 }
 ```
 
+---
 
 ## Example
 
@@ -116,6 +123,8 @@ randsamp <- function(n, d="uniform") {
 }
 ```
 
+---
+
 ## Exercise 2.1
 
 Take the function above and add a new option: the binomial distribution.
@@ -128,8 +137,11 @@ and probability of "heads". You need to adapt the code accordingly: choose
 something meaningful, e.g. size=1 and prob=0.5 to simulate a single fair
 coin toss.
 
+---
 
 # Reading and writing data
+
+---
 
 ## Reading data
 
@@ -160,6 +172,7 @@ XLSX (new Excel)             `read_xlsx()`                   From the `readxl` p
                                                              not a data frame! 
 ---------------------------- ------------------------------- --------------------------
 
+---
 
 ## Reading with GUI
 
@@ -167,6 +180,8 @@ You can use the "Files" pane to import some data types. When you do, you
 get an import dialog to choose certain options; but then, the actual
 command is copied to your console – you can copy and paste it and it will
 work exactly the same.
+
+---
 
 ## Tibbles / readxl
 
@@ -182,6 +197,8 @@ One crucial difference between tibble and data frame is that `tibble[ , 1 ]`
 returns a tibble, while `dataframe[ , 1]` returns a vector. The second
 crucial difference is that it does not support row names (on purpose!).
 
+---
+
 ## Cleaning up data
 
 `unique` returns the unique values in a vector. Use it to check the
@@ -195,6 +212,8 @@ Convert with `factor` when necessary (and only then).
 
 Also, you can use my function `colorDF_summary` from the `colorDF` package
 (install from CRAN: `install.packages("colorDF")`)
+
+---
 
 ## Excercise 2.2
 
