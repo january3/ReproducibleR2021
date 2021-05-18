@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Lecture 3: Literate programming</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="January Weiner" />
+    <meta name="date" content="2021-05-18" />
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="files/cubi-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="files/style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lecture 3: Literate programming
+## R for reproducible science
+### January Weiner
+### 2021-05-18
+
+---
+
+
+
+
+
+
+
+
+
+## Literate programming
+
+
+.pull-left[
+
+*I believe that the time is ripe for significantly better documentation
+of programs, and that we can best achieve this by considering
+programs to be works of literature. Hence, my title: “Literate
+Programming.”*
+
+*Let us change our traditional attitude to the construction of
+programs: Instead of imagining that our main task is to instruct a
+computer what to do, let us concentrate rather on explaining to
+human beings what we want a computer to do.*
+
+(Donald E. Knuth)
+]
+
+.pull-right[
+![Donald E. Knuth](images/knuth.jpg)
+]
+
+---
+
+## Coding for others (including yourself)
+
+ * the "future you" will need to understand your code. You think you will
+   remember, but you won't.
+
+--
+
+ * Principles of reproducibility require that your code is readable by
+   other humans, not only by machines
+
+--
+
+ * Clear, well documented and communicative code will be also easier to
+   maintain in future
+
+---
+
+## What makes good communication?
+
+ * **simplicity**: as complex as necessary, but as simple as possible
+
+--
+
+    * try to stick to base R and simple tidyverse as possible
+    * avoid complex constructs like object oriented (OO) programming,
+      optimizations
+    * if you had to google it, it's complex
+    * don't shoot sparrows with a canon – often a simpler approach might be
+      less elegant, but better understandable
+
+---
+
+## Cyclomatic complexity
+
+.pull-left[
+`$$M = E - N + 2\cdot P$$`
+
+`\(M\)` – complexity, `\(E\)` – number of edges, `\(N\)` – number of nodes, `\(P\)` –
+connected components
+]
+
+.pull-right[
+![:scale 70%](images/cyclomatic_number.jpg)
+
+`\(10 - 7 + 2 = 5\)`
+]
+
+.myfootnote[
+You can check the complexity of your program / package with the `cyclocomp`
+package, but the actual important thing here is to understand the concept.
+]
+
+---
+
+
+## What makes good communication?
+
+ * **clarity**
+
+--
+
+    * streamline your code ($A \rightarrow B \rightarrow C$) to make it
+      clearer what it does
+    * split the operations between lines of code and multiple
+      functions (refactorize)
+    * avoid re-using variables 
+ 
+
+---
+
+## What makes good communication?
+
+ * consistency
+
+--
+
+    * use a naming scheme
+    * use a standardized documentation format (I mean the comments etc.)
+    * decide on a dialect (more on that later)
+    * use the same variable names for the same context (e.g. `foo` for a
+      throwaway variable, `i` for a counter, `res` for a result)
+    * use nouns for variables and verbs for functions, e.g. `linear_model` vs
+      `calculate_linear_model()`
+    * use `.dot_vars` (variables starting with a dot) to indicate "local"
+      or temporary variables (dot is a normal letter, you can call a
+      variable `.` - tidyverse does this a lot!).
+
+---
+
+## Naming schemes
+
+You can't use spaces or dashes in variable names.
+
+ * `snake_case` (separate with underscores)
+ * `camelCase` or `CamelCase` (`PascalCase`) – some think it is less
+   readable (readability studies are inconclusive)
+
+Avoid these:
+
+ * `alllowercase` – not readable
+ * `period.separated` – may cause issues with the S3 OO system or R
+
+---
+
+
+## What makes good communication?
+
+ * Verbosity
+
+--
+
+     * document each function: what does it take as input, what does it
+       return
+     * document each file: what is this file for
+     * document each "significant" or non-obvious variable: what does it
+       contain
+
+---
+ 
+## Literate programming
+
+*The practitioner of literate programming can be regarded as an
+essayist, whose main concern is with exposition and excellence of
+style. Such an author, with thesaurus in hand, **chooses the names of
+variables carefully and explains what each variable means**.*
+
+--
+
+*He or she strives for a program that is comprehensible because its concepts
+have been introduced in **an order that is best for human understanding**,
+using a mixture of formal and informal methods that reinforce each other.*
+
+(Donald E. Knuth)
+
+---
+
+## Dialects in R
+
+Like any human or computer language, R has dialects, false friends (like
+"donut" in Germany / Berlin) and multiple ways to express the same.
+
+Like in scientific English, we need to strive for consistency, simplicity
+and clarity to 
+
+ * tidyverse vs base R
+ * tidyverse (S3, `snake_case`) vs BioConductor (S4, `CamelCase`)
+
+---
+
+## Example: choosing a column from a data frame
+
+
+```r
+## following all do the same
+iris[["Sepal.Length"]]
+iris$Sepal.Length
+iris[[1]]
+iris[,1]
+iris %&gt;% pull(Sepal.Length)
+iris %&gt;% pull("Sepal.Length")
+```
+
+(why?)
+
+---
+
+## Example: Object Oriented programming in R
+
+
+ * Some languages have barebone OO, some have very complex
+
+--
+
+ * In R, we have *everything*
+
+    * S3: simple to use, simple to implement
+    * S4: formalized S3 (partly compatible)
+    * reference classes: complex, formalized, few programmers are using it
+
+---
+
+## So what is this OO anyway?
+
+ (example of OO in action)
+
+
+
+---
+
+## Example: formula notation with `~`
+
+
+ * In linear modelling it indicates the relationship between covariates and
+   dependent variables (e.g. `lm(y ~ x)`)
+ * In tidyverse it is a *shorthand* for `function(.x)`
+
+
+.pull-left[
+Base R:
+
+
+```r
+## calculate sums of squares for 
+## the first four columns
+sapply(iris[,1:4], function(x) sum(x^2))
+
+## same as – dot is just a regular
+## variable name
+sapply(iris[,1:4], function(.) sum(.^2))
+```
+
+]
+
+.pull-right[
+Tidyverse:
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="files/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
