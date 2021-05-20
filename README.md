@@ -12,6 +12,6 @@ Links to the lecture and practicals:
  * [Practicals 2](https://january3.github.io/ReproducibleR2021/Practicals/practicals_02/weiner_reproducible_R_practicals_02.html)
  * [Lecture 3: Literate programming](https://january3.github.io/ReproducibleR2021/Lectures/lecture_03_180521/weiner_reproducible_R_03.html)
  * [Practicals 3](https://january3.github.io/ReproducibleR2021/Practicals/practicals_03/weiner_reproducible_R_practicals_03.html)
- * [Lecture 4: The garden of forking paths](https://january3.github.io/ReproducibleR2021/Lectures/lecture_03_180521/weiner_reproducible_R_03.html)
+ * [Lecture 4: The garden of forking paths](https://january3.github.io/ReproducibleR2021/Lectures/lecture_04_200521/weiner_reproducible_R_04.html)
 
 

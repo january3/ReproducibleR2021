@@ -289,9 +289,10 @@ sapply(iris[,1:4], function(.) sum(.^2))
 .pull-right[
 Tidyverse:
 
-```{r}
+```{r,echo=TRUE,eval=FALSE}
 ## the two are identical
 map(iris[,1:4], function(.) sum(.^2))
 map(iris[,1:4], ~ sum(.^2))
 ```
 
+]

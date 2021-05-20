@@ -52,7 +52,7 @@ library(cowplot)
 
           ![Image caption](image_file_name.jpg)
 
-  4. Create a bullet point and numbered list. What happens if you use
+ 4. Create a bullet point and numbered list. What happens if you use
      different numbers or change the order of the numbers?
 
 ```
