@@ -47,3 +47,20 @@ ggplot(df, aes(x=PC1, y=PC2, color=Species)) + geom_point() + theme_bw() +
   scale_color_brewer(palette="Dark2")
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

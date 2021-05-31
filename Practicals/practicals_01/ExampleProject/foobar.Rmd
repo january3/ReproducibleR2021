@@ -1,0 +1,38 @@
+---
+title: "asdfrgadfg"
+author: "January Weiner"
+date: "5/20/2021"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+bibliography: mybibliography.bib
+csl: science.csl
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<!-- comment style of HTML -->
+
+
+```{r eval=FALSE, include=FALSE}
+DT::datatable(iris)
+```
+
+```{r echo=FALSE}
+versicolor <- iris$Species == "versicolor"
+ver_sw <- iris$Sepal.Width[versicolor]
+virginica <- iris$Species == "virginica"
+vir_sw <- iris$Sepal.Width[virginica]
+t.test(ver_sw, vir_sw)
+```
+
+DNA structure [@watson1953structure]. @watson1953structure have described the DNA structure. Friends (not really) of Rosalind Franklin have shown [-@watson1953structure] the DNA structure.
+
+
+
+# Literature
+
+

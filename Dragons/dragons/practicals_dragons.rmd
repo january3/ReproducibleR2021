@@ -1,0 +1,140 @@
+---
+title: 'Practicals 4: Dragons'
+author: "January Weiner"
+date: "5/20/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+me <- readRDS("../metabo_export.rds")
+```
+
+First, we identify kynurenine and tryptophan.
+
+```{r}
+library(tidyverse)
+library(cowplot)
+library(lme4)
+theme_set(theme_bw())
+#me$genes %>% filter(grepl("kynurenin", BIOCHEMICAL.NAME))
+#me$genes %>% filter(grepl("tryptophan", BIOCHEMICAL.NAME))
+
+id1 <- "X177"
+id2 <- "X260"
+
+relA1 <- me$E[ id1, ]
+relA2 <- me$E[ id2, ]
+covar <- data.frame(me$targets, kyn=relA1, trp=relA2)
+g1 <- ggplot(covar, aes(x=group, y=kyn)) + geom_boxplot() + ggtitle("Kynurenine")
+g2 <- ggplot(covar, aes(x=group, y=trp)) + geom_boxplot() + ggtitle("Tryptophan")
+plot_grid(g1, g2)
+```
+
+Correlation analysis
+
+```{r}
+ggplot(covar, aes(x=trp, y=kyn, color=group)) + geom_point()
+cor.test(covar$kyn, covar$trp, method="s")
+covar_tb <- covar %>% filter(group == "C_TB_ACTIVE")
+```
+
+
+```{r}
+ggplot(covar_tb, aes(x=trp, y=kyn, color=group)) + geom_point()
+cor.test(covar_tb$kyn, covar_tb$trp, method="s")
+```
+
+
+Attempt to model using lm()
+
+```{r}
+lmod0 <- lm(kyn ~ trp, data=covar)
+lmod <- lm(kyn ~ trp + group, data=covar)
+summary(lmod)
+```
+
+Correlating the residuals
+
+```{r}
+lmodKyn <- lm(kyn ~ group, data=covar)
+lmodTrp <- lm(trp ~ group, data=covar)
+plot(resid(lmodKyn), resid(lmodTrp))
+cor.test(resid(lmodKyn), resid(lmodTrp), method="s")
+```
+
+
+# Dragon data
+
+```{r}
+#dragons <- read.csv("../dragon_IQ.csv")
+dragons <- read_csv("../dragon_IQ.csv")
+ggplot(dragons, aes(x=Weight, y=IQ)) + geom_point()
+cor.test(dragons$Weight, dragons$IQ)
+lmod <- lm(IQ ~ Weight, data=dragons)
+ggplot(dragons, aes(Weight, IQ, group=Class, color=Class)) + geom_point() + geom_smooth(method = "lm")
+```
+
+
+```{r}
+g1 <- ggplot(dragons, aes(x=Class, y=Weight)) + geom_boxplot() + ggtitle("Weight")
+g2 <- ggplot(dragons, aes(x=Class, y=IQ)) + geom_boxplot() + ggtitle("IQ")
+plot_grid(g1, g2, ncol=1)
+```
+
+Linear modelling:
+
+```{r}
+lmod_full <- glm(IQ ~ Weight + Class + Species, data=dragons)
+summary(lmod_full)
+```
+
+Mixed effects:
+
+```{r}
+memod_full1 <- lmer(IQ ~ Weight + (1|Class/Species), data=dragons)
+
+## if it was a fully crossed design...
+memod_full2 <- lmer(IQ ~ Weight + (1|Class) + (1|Species), data=dragons)
+
+## also random slope (you can omit 1 + )
+memod_full3 <- lmer(IQ ~ Weight + (1 + Weight|Class/Species), data=dragons)
+
+## no intercept, only slope
+memod_full4 <- lmer(IQ ~ Weight + (0 + Weight|Class/Species), data=dragons)
+
+## no correlation between intercept and slope
+memod_full5  <- lmer(IQ ~ Weight + (1 + Weight||Class), data=dragons)
+memod_full5b <- lmer(IQ ~ Weight + (1|Class) + (0 + Weight|Class), data=dragons)
+```
+
+Test for significance of the Weight variable:
+
+```{r}
+memod_full1 <- lmer(IQ ~ Weight + (1|Class/Species), data=dragons)
+memod_full0 <- lmer(IQ ~ 1 + (1|Class/Species), data=dragons)
+anova(memod_full0, memod_full1)
+```
+
+
+
+If the model doesn't converge:
+
+```{r}
+library(afex)
+all_fit(memod_full5)
+```
+
+
+Split figure by class
+
+```{r}
+ggplot(dragons, aes(Weight, IQ, group=Class, color=Class)) + geom_point() + geom_smooth(method = "lm") + facet_wrap(~ Class)
+ggplot(dragons, aes(Weight, IQ, group=Species, color=Species)) + geom_point() + geom_smooth(method = "lm") + facet_wrap(~ Class) + theme(legend.position="none")
+```
+
