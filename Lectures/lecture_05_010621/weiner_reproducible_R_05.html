@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Lecture 5: Tools for reproducible science</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="January Weiner" />
+    <meta name="date" content="2021-06-01" />
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="files/cubi-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="files/style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lecture 5: Tools for reproducible science
+## R for reproducible science
+### January Weiner
+### 2021-06-01
+
+---
+
+
+
+
+
+
+
+
+
+
+### Grading
+
+--
+
+Submit an analysis written in Rmarkdown, including all necessary files.
+This can be your own research, example analysis, fragment of the course –
+anything you like. There is no minimum requirement (e.g. length), but I
+require the following:
+
+ * it needs to be Rmarkdown 
+ * it must include your own R code.
+ * it must work (i.e. generate a HTML, Word or PDF document)
+
+In return, I will give you a detailed description of how I think you could improve
+your work and make it more reproducible.
+
+---
+
+### Tools for reproducible science
+
+ * Rmarkdown ✓
+ * Reproducible environment ✓
+ * Data repository (✓)
+ * Version control system
+ * Visualizations
+
+---
+
+### git, github &amp; co.
+
+**Control version system:** a computer program which tracks and record the
+changes you make to your project. There are many: CVS, SVN (subversion),
+git. 
+
+--
+
+.pull-left[
+**git:** a particularly popular control version system written by Linus
+Torvalds.
+]
+
+.pull-right[
+![:scale 50%](images/git.png)
+]
+
+--
+
+**github, gitlab, bitbucket**: online repositories for git (and not only
+git) which allow you to publish your project, serve as a poor mans backup
+but, most importantly, facilitate collaboration. 
+
+---
+
+### Why use git + github (or git + gitlab)?
+
+ * Unlimited undo
+ * git: Tools for recording changes, comparing versions, reverting, merging
+ * github: tools for collaboration, tracking issues, project management,
+   automated deployment, publishing documentation
+
+
+**Note:** github and github are free, but for some advanced features you
+need to pay. E.g. github pages (e.g. january3.github.io) require payment ($4/month)
+ 
+---
+
+How does working with a manuscript look in practice:
+
+ * You write a manuscript and send it to co-authors
+ * co-authors include their changes and send them back... to everyone
+   involved, and
+   * some of them include the changes in changes from other co-authors
+   * some forget to track the changes or use the yellow markers instead of
+     change tracking tool
+   * some mess up the document formatting, especially bibliography
+   * some include their changes as plain text in the e-mail
+
+--
+
+ * This is not reproducible science, this is chaos
+ * Soon, you lose control and consider changing careers
+
+---
+
+How would it look like in an ideal world:
+
+ * document written in Rmarkdown
+ * everybody uses git &amp; github/gitlab
+ * you use the github/gitlab project management to merge or reject the changes
+ 
+
+This is not going to happen anytime soon in the academia, but using git and
+github is still worthwile for your own sake.
+
+---
+
+### git basics
+
+.pull-left[
+
+Is it hard to use?
+
+ * git is primarily a command line program
+ * there are numerous interfaces to git, including Rstudio
+ * to use it, you need to download it from
+   [https://git-scm.com/](https://git-scm.com/)
+]
+
+.pull-right[
+
+![](images/gitrstudio.png)
+
+]
+
+---
+
+### git basics
+
+
+ * Changes *are not* tracked automatically
+
+ * Development cycle:
+
+     1. *clone* or *pull* the data from a remote repository to make your
+        local copy up to date
+     2. edit some files
+     3. select files for a commit (*stage* a commit): `git add`
+     4. record the changes (*commit*): `git commit`
+     5. copy the changes to public repositories (*push the changes* or *submit a pull request*)
+     6. go to step 2.
+
+---
+class:empty-slide,mywhite
+background-image:url(images/git_diagram_01.svg)
+
+---
+class:empty-slide,mywhite
+background-image:url(images/git_diagram_02.jpg)
+
+---
+
+### What is a commit?
+
+ * A commit is a snapshot of your project.
+ * You create a commit after several changes, possibly to multiple files
+ * The changes should have something in common such that you can create a
+   meaningful comment for the commit (i.e. "added parser for fasta files", or
+   "resolved issue #92" rather than "updatad several things").
+ * Each commit has a unique identifier (called a hash or a sha¹)
+ * The most recent commit is called HEAD
+
+.myfootnote[
+¹ from the SHA1 hashing algorithm
+]
+
+
+---
+
+.mybigmid[
+
+DEMO
+
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="files/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
