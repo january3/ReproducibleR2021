@@ -19,13 +19,17 @@ toc: no
 
 ```{r,echo=FALSE}
 ## Set default options for the knitr RMD processing
-knitr::opts_chunk$set(echo=FALSE,warning=FALSE,message=FALSE,fig.width=5,fig.height=5,cache=FALSE,autodep=TRUE, results="hide")
+knitr::opts_chunk$set(echo=TRUE,warning=FALSE,message=FALSE,fig.width=5,fig.height=5,cache=FALSE,autodep=TRUE, results="hide")
+```
+
+```{r libraries,echo=FALSE}
 library(pander)
 library(knitr)
 library(kableExtra)
 library(tidyverse)
 library(ggthemes)
 library(readxl)
+library(RColorBrewer)
 source("functions.R")
 ```
 
@@ -44,11 +48,6 @@ knitr::knit_hooks$set(output = function(x, options){
 num_colors <- function(forget=TRUE) 256
 library(crayon)
 assignInNamespace("num_colors", num_colors, pos="package:crayon")
-```
-
-
-```{r libraries,cache=FALSE}
-library(tidyverse)
 ```
 
 
@@ -226,6 +225,8 @@ DEMO
 
  * Large files (git-lfs is a partial solution, but not really for
    bioinformatics)
+ * binary files: git notices a change, but cannot for example interpret
+   Word documents
 
 
 ---
@@ -240,29 +241,45 @@ background-image:url(images/Minard.png)
 
 ## Edward Tufte
 
-------------------------------------- ----------------------------------------------
-*“Graphical excellence is that which  ![](files/tufte.png){width=200px}
+.pull-left[
+.center[
+*“Graphical excellence is that which  
 gives to the viewer the greatest
 number of ideas in the shortest time 
 with the least ink in the smallest
 space.”*
+]
+]
 
-------------------------------------- ----------------------------------------------
+.pull-right[
+![](images/tufte.png)
+]
+
+---
+class:empty-slide,mywhite
+background-image:url(images/tufte-books.png)
 
 ---
 
-## Edwart Tufte – Books
-
-![](files/tufte-books.png){width=700px}
-
----
-
-## Less is more
-
+.mycenter[
 Data visualization is all about communication.
 
-Just like in graphics design, less is more. To get a good graphics remove
+Just like in graphics design, less is more. 
+
+To get a good graphics remove
 all excess ink.
+]
+
+---
+
+## Reproducibility of visualisations
+
+ * It should be absolutely clear what data was used to generate the
+   visualization
+ * The data must be accessible (some journals require a data file for each
+   figure!)
+ * The visualization code should likewise be published
+
 
 ---
 
@@ -272,6 +289,7 @@ all excess ink.
  * What do I *need* to say? 
  * What part of my information is redundant?
  * What is the standard way of displaying the information in my field?
+ * Is the data accessible for others?
 
 Resist the temptation of showing every bit of data. If necessary, put it in
 the supplementary materials.
@@ -300,10 +318,8 @@ p + geom_bar(stat="identity", mapping=aes(fill=cyl)) +
 
 ---
 
-##
-
-*“Clutter and confusion are failures of design, not attributes of
-information.”* (Tufte)
+.mycenter[*“Clutter and confusion are failures of design, not attributes of
+information.”* (Tufte)]
 
 ---
 
@@ -369,6 +385,19 @@ p + geom_bar(stat="identity", fill="#666666", width=0.5) +
 
 ## Add meaningful labels
 
+.pull-left[
+```{r barplot_01b,fig.width=6,fig.height=5,echo=FALSE}
+p <- mtcars %>% group_by(cyl) %>% 
+      summarise(mean_mpg=mean(mpg)) %>%
+      mutate(cyl=factor(cyl)) %>% 
+      ggplot(aes(x=cyl, y=mean_mpg, fill=cyl))
+p + geom_bar(stat="identity", mapping=aes(fill=cyl)) + 
+  theme(axis.line=element_line(size=1, arrow=arrow(length=unit(0.1, "inches"))))
+```
+]
+
+
+.pull-right[
 ```{r barplot_08,fig.width=6,fig.height=5,echo=FALSE}
 p + geom_bar(stat="identity", fill="#666666", width=0.5) + 
   theme(legend.position="none", panel.grid.major.x=element_blank(), 
@@ -377,77 +406,93 @@ p + geom_bar(stat="identity", fill="#666666", width=0.5) +
     panel.grid.minor.y=element_line(size=1, color="white")) + 
     ylab("Mean MPG") + xlab("Number of cylinders")
 ```
+]
+
 
 ---
 
 ```{r echo=FALSE}
 library(cowplot)
-theme_set(theme_grey())
+theme_set(theme_linedraw())
 ```
 
 ---
 
-## Box plots: default R
+
+.pull-left[
+### Box plots: default R:
 
 ```{r boxplot_01,fig.width=8,fig.height=5}
 boxplot(hwy ~ class, data=mpg)
 ```
+]
 
----
+.pull-right[
+### Box plots: ggplot2
 
-## Box plots: ggplot2
-
-```{r boxplot_3,eval=FALSE}
+```{r boxplot_3,eval=TRUE}
 mpg %>% ggplot(aes(x=class, y=hwy)) + geom_boxplot()
 ```
+]
 
-## Box plots: ggplot2
-
-```{r boxplot_3,echo=FALSE,fig.width=8,fig.height=5}
-```
 
 ---
 
 ## Box + scatter plots
 
+.pull-left[
 ```{r boxplot_4,eval=FALSE}
-mpg %>% ggplot(aes(x=class, y=hwy)) + geom_boxplot() +
-	geom_dotplot(binaxis="y", stackdir="center", fill="grey", dotsize=.3)
+mpg %>% ggplot(aes(x=class, y=hwy)) + 
+  geom_boxplot() +
+	geom_dotplot(binaxis="y", 
+               stackdir="center", 
+               fill="grey", 
+               dotsize=.3)
 ```
+]
 
----
-
-## Box + scatter plots
+.pull-right[
 
 ```{r boxplot_4,echo=FALSE,fig.width=8,fig.height=5}
 ```
 
+]
+
 ---
 
 ## Box plots: Tufte
 
-```{r boxplot_4,fig.width=8,fig.height=5,eval=FALSE}
+.pull-left[
+```{r boxplot_02,fig.width=8,fig.height=5,eval=FALSE}
 ```
 
----
+]
 
-## Box plots: Tufte
-
+.pull-right[
 ```{r boxplot_02,fig.width=8,fig.height=5,echo=FALSE}
 toupper1st <- function(x) 
-  paste0(toupper(substring(x, 1, 1)), substring(x, 2))
+  paste0(toupper(substring(x, 1, 1)), 
+         substring(x, 2))
 mpg %>% mutate(class=toupper1st(class)) %>% 
-  ggplot(aes(class, hwy)) + geom_tufteboxplot() + theme_tufte() + xlab("") + 
-  theme(axis.text=element_text(size=14), axis.title.y=element_text(size=18, margin=margin(0,20,0,0))) +
+  ggplot(aes(class, hwy)) + 
+  geom_tufteboxplot() + 
+  theme_tufte() + xlab("") + 
+  theme(axis.text=element_text(size=14), 
+        axis.title.y=
+          element_text(size=18, 
+                       margin=margin(0,20,0,0))) +
   theme(axis.ticks.x=element_blank()) +
-  theme(axis.text.x=element_text(margin=margin(30,0,0,0)))
+  theme(axis.text.x=
+        element_text(margin=margin(30,0,0,0)))
 ```
+]
 
 ---
 
 ## Scatter plot variants
 
-```{r scatter_themes,fig.width=8,fig.height=5,echo=FALSE}
+.center[
+```{r scatter_themes,fig.width=10,fig.height=7,echo=FALSE}
 p <- list()
 p$p1 <- ggplot(mtcars, aes(x=disp, y=hp, color=factor(cyl))) + geom_point() 
 p$p2 <- ggplot(mtcars, aes(x=disp, y=hp, color=factor(cyl))) + geom_point() + 
@@ -460,6 +505,7 @@ p$p4 <- ggplot(mtcars, aes(x=disp, y=hp, color=factor(cyl))) + geom_point() +
 p <- map(p, ~ . + theme(plot.margin=margin(20, 0, 0, 0)))
 plot_grid(plotlist=p, labels=c("Default", "Par", "Cowplot", "Tufte"))
 ```
+]
 
 ---
 
@@ -468,15 +514,12 @@ plot_grid(plotlist=p, labels=c("Default", "Par", "Cowplot", "Tufte"))
 ```{r scatter_themes,fig.width=8,fig.height=5,eval=FALSE}
 ```
 
-##
+---
 
-    
-<div class="blank"></div> 
-<div class="blank"></div> 
-<div class="blank"></div>     
-    
 
+.mycenter[
 *“Above all else show the data.”* (Tufte)
+]
 
 ---
 
@@ -494,9 +537,28 @@ plot_grid(plotlist=p, labels=c("Default", "Par", "Cowplot", "Tufte"))
  * Bar charts are often misused to show sample means and sample spread;
    they should be replaced by box plots, violin plots or dot plots.
    
-(demo)
 
 *Editorial. "Kick the bar chart habit." Nature Methods 11 (2014): 113.*
+
+---
+
+![](images/pnas_1.png)
+
+.myfootnote[
+*Kramer, Adam DI, Jamie E. Guillory, and Jeffrey T. Hancock. "Experimental evidence of massive-scale emotional contagion through social networks." Proceedings of the National Academy of Sciences 111.24 (2014): 8788-8790.*
+]
+
+---
+
+![](images/pnas_2.png)
+
+.myfootnote[
+*Kramer, Adam DI, Jamie E. Guillory, and Jeffrey T. Hancock. "Experimental evidence of massive-scale emotional contagion through social networks." Proceedings of the National Academy of Sciences 111.24 (2014): 8788-8790.*
+]
+
+---
+
+![](images/barplots.png)
 
 ---
 
@@ -510,8 +572,6 @@ plot_grid(plotlist=p, labels=c("Default", "Par", "Cowplot", "Tufte"))
 
 ---
 
-## Avoid pie charts
-
 ```{r,echo=FALSE}
 wigplot <- function(i) {
   require(plotwidgets)
@@ -523,15 +583,15 @@ wigplot <- function(i) {
   col <- plotPals("zeileis")
 
   plot.new()
-  wgPie(.5, .5, .8, .8, v, col=col)
+  wgPie(.5, .5, .8, .8, v, col=col, res=1000)
 
   if(i > 0) {
     plot.new()
-    wgRing(.5, .5, .8, .8, v, col=col)
+    wgRing(.5, .5, .8, .8, v, col=col, res=1000)
   }
   if(i > 1) {
     plot.new()
-    wgBurst(.5, .5, .8, .8, v, col=col)
+    wgBurst(.5, .5, .8, .8, v, col=col, res=1000)
   }
   if(i > 2) {
     plot.new()
@@ -539,7 +599,7 @@ wigplot <- function(i) {
   }
   if(i > 3) {
     plot.new()
-    wgPlanets(.5, .5, .8, .8, v, col=col)
+    wgPlanets(.5, .5, .8, .8, v, col=col, res=1000)
   }
   if(i > 4) {
     plot.new()
@@ -552,53 +612,55 @@ wigplot <- function(i) {
 }
 ```
 
-```{r echo=FALSE,fig.width=7,fig.height=4}
+```{r echo=FALSE,fig.width=10,fig.height=7,dev="svg"}
 wigplot(0)
 ```
 
 ---
 
-## Avoid pie charts
 
-```{r echo=FALSE,fig.width=7,fig.height=4}
+
+```{r echo=FALSE,fig.width=10,fig.height=7,dev="svg"}
 wigplot(1)
 ```
 
 ---
 
-## Avoid pie charts
 
-```{r echo=FALSE,fig.width=7,fig.height=4}
+
+```{r echo=FALSE,fig.width=10,fig.height=7,dev="svg"}
 wigplot(2)
 ```
 
 ---
 
-## Avoid pie charts
 
-```{r echo=FALSE,fig.width=7,fig.height=4}
+
+```{r echo=FALSE,fig.width=10,fig.height=7,dev="svg"}
 wigplot(3)
 ```
 
 ---
 
-## Avoid pie charts
 
-```{r echo=FALSE,fig.width=7,fig.height=4}
+
+```{r echo=FALSE,fig.width=10,fig.height=7,dev="svg"}
 wigplot(4)
 ```
 
 ---
 
-## Avoid pie charts
 
-```{r echo=FALSE,fig.width=7,fig.height=4}
+
+```{r echo=FALSE,fig.width=10,fig.height=7,dev="svg"}
 wigplot(5)
 ```
 
-## Avoid pie charts
+---
 
-```{r echo=FALSE,fig.width=7,fig.height=4}
+
+
+```{r echo=FALSE,fig.width=10,fig.height=7,dev="svg"}
 wigplot(6)
 ```
 
@@ -636,7 +698,34 @@ watch?)
 ## Graphics systems in R
 
 
-![](files/grid-pkgs.svg)
+![](images/grid-pkgs.svg)
+
+---
+
+## Bitmap vs vector graphics
+
+.pull-left[
+Bitmap graphics (JPG, PNG, TIFF)
+
+```{r echo=FALSE}
+wigplot(2)
+```
+]
+
+--
+
+.pull-right[
+Vector graphics (PDF¹, SVG)
+
+```{r,dev="svg",echo=FALSE}
+wigplot(2)
+```
+]
+
+.myfootnote[
+¹ PDF and SVG can also include bitmap graphics, so converting
+a bitmap file to PDF does not result in a higher quality.
+]
 
 ---
 
@@ -734,7 +823,7 @@ We will now use world inequality data to create a bar plot.
 First, we prepare the data using tidyverse.
 
 ```{r wid,fig.width=8,fig.height=5,out.width="50%"}
-wid <- read_excel("../Datasets/WIID_19Dec2018.xlsx")
+wid <- read_excel("../../Datasets/WIID_19Dec2018.xlsx")
 wid <- wid %>% drop_na(gini_reported, q1:q5, d1:d10)
 wid2015 <- wid %>% filter(year==2015 & 
                           region_un == "Europe" & 
@@ -770,8 +859,10 @@ p
 
 ## Example session
  
-```{r wid01,fig.width=8,fig.height=5,echo=FALSE,out.width="90%"}
+.center[
+```{r wid01,fig.width=8,fig.height=5,echo=FALSE,out.width="70%"}
 ```
+]
 
 ---
 
@@ -814,22 +905,21 @@ p + theme_tufte() + scale_fill_brewer(palette="Blues") +
 
 ## Make it nice!
 
-```{r wid4,fig.width=8,fig.height=5,out.width="90%",echo=FALSE}
+.center[
+```{r wid4,fig.width=8,fig.height=5,out.width="70%",echo=FALSE}
 ```
+]
 
 ---
 
 
-## Exercise 4/1
+## Exercises 1.
 
 ---
 
-# Eine kleine Farbenlehre
+### Eine kleine Farbenlehre
 
----
-
-
-## Farbenlehre (Color theory)
+Farbenlehre = Color theory
 
  * What is the function of color on the plot?
  * Does the color help or distract?
@@ -839,7 +929,6 @@ p + theme_tufte() + scale_fill_brewer(palette="Blues") +
    wrong.
 
 ---
-
 
 ## Representing colors
 
@@ -997,14 +1086,20 @@ display.brewer.all(colorblindFriendly=T)
 
 ## Iris data set
 
+.pull-left[
 ```r
 data("iris")
 ```
+]
 
-![](files/iris.svg){width=600px}
+.pull-right[
+![](images/iris.svg)
+]
 
+.myfootnote[
 *The use of multiple measurements in taxonomic problems as an example of linear
 discriminant analysis.* Fisher 1936
+]
 
 ---
 
@@ -1191,11 +1286,410 @@ corresponds to which color?)
 
 ---
 
-## Exercise 4/2
+## Exercise 2.
+
 
 ---
 
-## Comparing 
+.mycenter[
+ggplot2 tips and tricks
+]
+
+---
+
+## Resources
+
+ * The "[R Graphics Cookbook](https://r-graphics.org/)"
+ * The [STHDA (sthda.com)](https://sthda.com) website
+ * [Stackoverflow](https://stackoverflow.com)
+ * [R-graph-gallery](https://www.r-graph-gallery.com/)
+ * [Data-to-viz](https://www.data-to-viz.com/)
+
+---
+
+## qplot: gentle introduction to ggplot
+
+`qplot` is an interface to `ggplot` which uses a syntax similar to the
+ basic `plot` function.
+
+---
+
+## Working with themes
+
+The `theme()` and `theme_*()` functions return an object of the class
+`theme` which can be added to a ggplot in order to change appearance of
+several elements.  The list of the elements you can theme can be found in
+the `theme()` help page. You can add themes. The result is again a theme
+object that you can reuse and even set as default. This makes it easy to
+create your own themes.
+
+---
+
+## logarithmic scaling
+
+In base R:
+
+```r
+plot(...., log="xy") # to scale both axes
+```
+
+In ggplot2:
+
+```r
+ggplot(data, aes(...)) + ... + scale_x_log10
+```
+
+---
+
+## ggrepel
+
+To avoid labels which are overlaping, we can use the `ggrepel` package.
+
+(Demo)
+
+---
+
+## Cowplot
+
+There are two important functions in cowplot: predefined `theme_cowplot()`,
+which is quite nice, and `plot_grid()`, which rocks. `plot_grid` allows you
+to create separate plots and combine them in a number of ways. You can even
+draw a plot in basic R, record it and include it in your `plot_grid` call!
+
+Note: Cowplot defines its own theme, `theme_cowplot()` and *automatically sets it
+when loaded* (I think that is no longer the case in the newest versions).
+It stays there even if you unload the package, however you can always use
+`theme_set()` to set the default theme to something else.
+
+---
+
+
+
+## `facet_grid`
+
+You can get a lattice-like representation using `facet_grid()` function.
+For example:
+
+
+```{r facets,fig.width=7,fig.height=3.5,echo=TRUE}
+ggplot(mpg, aes(cty, hwy)) + geom_point() + facet_grid(rows=mpg$cyl)
+```
+
+---
+
+
+## Density plots
+
+```{r densityplots,eval=FALSE}
+data(mpg)
+ggplot(mpg, aes(cty, fill=factor(cyl))) +
+	geom_density(alpha=0.8) +
+    labs(title="Density plot",
+         subtitle="City Mileage Grouped by Number of cylinders",
+         caption="Source: mpg",
+         x="City Mileage",
+         fill="# Cylinders")
+```
+
+---
+
+
+## Density plots
+
+```{r densityplots,echo=FALSE,fig.width=8,fig.height=4.5}
+```
+
+---
+
+
+## Correlograms
+
+```{r correlogram,eval=FALSE}
+library(ggcorrplot)
+
+# Correlation matrix
+data(mtcars)
+corr <- round(cor(mtcars), 1)
+
+# Plot
+ggcorrplot(corr, hc.order = TRUE, 
+           type = "lower", 
+           lab = TRUE, 
+           lab_size = 3, 
+           method="circle", 
+           colors = c("tomato2", "white", "springgreen3"), 
+           title="Correlogram of mtcars", 
+           ggtheme=theme_bw)
+```
+
+---
+
+
+## Correlograms
+
+```{r correlogram,echo=FALSE,fig.width=7,fig.height=5}
+```
+
+---
+
+
+## Animations
+
+    #  ```{r, animation.hook="gifski"}
+    #  for (i in 0:5) {
+    #    pie(c(i, 6), col = c('red', 'yellow'), labels = NA)
+    #  }
+    #  ```
+
+```{r, animation.hook="gifski",echo=FALSE}
+for (i in 0:5) {
+  pie(c(i, 6), col = c('red', 'yellow'), labels = NA)
+}
+```
+
+---
+
+## The gapminder data set
+
+```{r eval=FALSE}
+library(gapminder)
+data(gapminder)
+```
+
+
+---
+
+
+## From data to figures
+
+ * What is the message of the figure?
+ * What data should be shown on a plot?
+ * What relationships do you want to illustrate?
+ * If it is tricky – I start with a pencil and a clean piece of paper!
+
+---
+
+
+## Factfulness
+
+.mycenter[
+*“The world cannot be understood without numbers. But the world cannot be understood with numbers alone.”*
+
+― Hans Rosling, Factfulness: *Ten Reasons We're Wrong About the World—and Why Things Are Better Than You Think*
+]
+
+---
+
+
+## Loading the gapminder data set
+
+```{r results="markdown"}
+library(ggplot2)
+theme_set(theme_bw())
+library(gapminder)
+knitr::kable(head(gapminder))
+```
+
+---
+
+
+## First plot
+
+```{r fig.width=6,fig.height=4.5}
+gapminder %>% ggplot(aes(x=gdpPercap, y=lifeExp, color=year)) + geom_point()
+```
+
+---
+
+
+## First plot
+
+```{r fig.width=6,fig.height=4.5}
+gapminder %>% ggplot(aes(x=gdpPercap, y=lifeExp, color=year)) + geom_point() +
+  scale_x_log10()
+```
+
+---
+
+
+## First plot
+
+```{r fig.width=6,fig.height=4.5}
+gapminder %>% ggplot(aes(x=gdpPercap, y=lifeExp, color=year)) + geom_point() +
+  scale_x_log10() + scale_color_viridis_c()
+```
+
+---
+
+
+## Select only one year
+
+```{r fig.width=6,fig.height=4.5}
+gapminder %>% filter(year==2007) %>%
+  ggplot(aes(x=gdpPercap, y=lifeExp, color=continent)) + geom_point() +
+  scale_x_log10() + scale_color_brewer(palette="Dark2")
+```
+
+---
+
+
+## Add population data
+
+```{r fig.width=6,fig.height=4.5}
+gapminder %>% filter(year==2007) %>%
+  ggplot(aes(x=gdpPercap, y=lifeExp, size=pop, color=continent)) + geom_point() +
+  scale_x_log10() + scale_color_brewer(palette="Dark2")
+```
+
+---
+
+
+
+## Nicer colors from gapminder
+
+```{r fig.width=6,fig.height=4.5}
+gapminder %>% filter(year==2007) %>%
+  ggplot(aes(x=gdpPercap, y=lifeExp, size=pop, color=country)) + 
+  geom_point(alpha=.7, show.legend=FALSE) +
+  scale_color_manual(values=country_colors) +
+  scale_x_log10()
+```
+
+---
+
+
+
+## Comparison year 1952 and 2007
+
+```{r gapminder1,eval=FALSE}
+g1952 <- gapminder %>% filter(year == 1952) %>%
+  ggplot(aes(x=gdpPercap, y=lifeExp, color=continent)) + geom_point() +
+  scale_color_brewer(palette="Dark2") +
+  xlim(range(gapminder$gdpPercap)) + 
+  ylim(range(gapminder$lifeExp)) + scale_x_log10()
+
+g2007 <- gapminder %>% filter(year == 2007) %>%
+  ggplot(aes(x=gdpPercap, y=lifeExp, color=continent)) + geom_point() +
+  scale_color_brewer(palette="Dark2") +
+  xlim(range(gapminder$gdpPercap)) + 
+  ylim(range(gapminder$lifeExp)) + scale_x_log10()
+
+plot_grid(g1952, g2007)
+```
+
+---
+
+
+
+## Comparison year 1952 and 2007
+
+```{r gapminder1,echo=FALSE,eval=TRUE,fig.width=10,fig.height=4.5}
+```
+
+---
+
+
+## Comparison year 1952 and 2007
+
+Much easier!
+
+```{r,fig.width=8,fig.height=4}
+gapminder %>% filter(year %in% c(1952, 2007)) %>%
+  ggplot(aes(x=gdpPercap, y=lifeExp, color=continent)) +
+  scale_color_brewer(palette="Dark2") +
+  geom_point() + facet_grid(. ~ year) + scale_x_log10()
+```
+
+---
+
+
+
+## Add population data
+
+```{r,fig.width=8,fig.height=4}
+gapminder %>% filter(year %in% c(1952, 2007)) %>%
+  ggplot(aes(x=gdpPercap, y=lifeExp, size=pop, color=continent)) +
+  scale_color_brewer(palette="Dark2") +
+  geom_point() + facet_grid(. ~ year) + scale_x_log10()
+```
+
+---
+
+
+
+## Slope diagram
+
+```{r gapminder_slope,eval=FALSE}
+tmp <- gapminder %>% filter(year %in% c(1952, 2007)) %>% 
+  group_by(continent, year) %>% 
+  summarise(mean=mean(gdpPercap), median=median(gdpPercap))
+tmp %>% ggplot(aes(x=year, y=mean, color=continent)) + 
+  geom_point() + geom_line() + 
+  scale_y_log10() + 
+  geom_label(aes(label=continent), hjust="outward", show.legend=F) + xlim(1945, 2020)
+```
+
+---
+
+
+## Slope diagram
+
+```{r gapminder_slope,echo=FALSE,fig.width=7}
+```
+
+---
+
+
+## Dumbbell chart
+
+```{r gapminder_dmb,eval=FALSE}
+gapminder %>% filter(year %in% c(1952, 2007) & continent=="Europe") %>% 
+  arrange(gdpPercap, year) %>% 
+  mutate(country=factor(country, levels=unique(country))) %>%
+  ggplot(aes(x=gdpPercap, y=country, color=year)) + 
+  geom_point() + geom_line()
+```
+
+---
+
+
+## Dumbbell chart
+
+```{r gapminder_dmb,echo=FALSE,fig.width=10,fig.height=4.5}
+```
+
+---
+
+
+## Let's move it
+
+```{r gganim,eval=FALSE}
+library(gganimate)
+g <- gapminder %>% ggplot(aes(x=gdpPercap, y=lifeExp, size=pop, color=continent)) + 
+  geom_point(alpha=.8) + 
+  scale_color_brewer(palette="Dark2") +
+  scale_x_log10() + 
+  scale_size(range = c(2, 12)) +
+  transition_time(year) + 
+  labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
+  ease_aes("linear")
+
+animate(g, duration = 15, fps = 20, width = 800, height = 500, renderer = av_renderer())
+anim_save("gapminder.mp4")
+```
+
+**Warning:** `gganimate` has *huge* installation requirements, because you
+need a renderer library. Depending on your system, this might take a lot of
+disk space / a lot of headache. For example, using the `gifski` package
+requires you to install the rust environment. Also, including in rmarkdown
+might be problematic.
+
+---
+
+
+## Let's move it
+
+<video controls autoplay><source src="gapminder.mp4" type="video/mp4"></video>
 
 ---
 
@@ -1324,328 +1818,4 @@ methods(class="ggplot")
 methods(print) %>% { .[grep("ggplot", .)] }
 ```
 
----
 
-## Exercise 4/3 (optional)
-
----
-
-
-# ggplot2 tips and tricks
-
----
-
-## Resources
-
- * The "[R Graphics Cookbook](https://r-graphics.org/)"
- * The [STHDA (sthda.com)](https://sthda.com) website
- * [Stackoverflow](https://stackoverflow.com)
- * [R-graph-gallery](https://www.r-graph-gallery.com/)
- * [Data-to-viz](https://www.data-to-viz.com/)
-
----
-
-## qplot: gentle introduction to ggplot
-
-`qplot` is an interface to `ggplot` which uses a syntax similar to the
- basic `plot` function.
-
----
-
-## Working with themes
-
-The `theme()` and `theme_*()` functions return an object of the class
-`theme` which can be added to a ggplot in order to change appearance of
-several elements.  The list of the elements you can theme can be found in
-the `theme()` help page. You can add themes. The result is again a theme
-object that you can reuse and even set as default. This makes it easy to
-create your own themes.
-
----
-
-## logarithmic scaling
-
-In base R:
-
-```r
-plot(...., log="xy") # to scale both axes
-```
-
-In ggplot2:
-
-```r
-ggplot(data, aes(...)) + ... + scale_x_log10
-```
-
----
-
-## ggrepel
-
-To avoid labels which are overlaping, we can use the `ggrepel` package.
-
-(Demo)
-
----
-
-## Cowplot
-
-There are two important functions in cowplot: predefined `theme_cowplot()`,
-which is quite nice, and `plot_grid()`, which rocks. `plot_grid` allows you
-to create separate plots and combine them in a number of ways. You can even
-draw a plot in basic R, record it and include it in your `plot_grid` call!
-
-Note: Cowplot defines its own theme, `theme_cowplot()` and *automatically sets it
-when loaded* (I think that is no longer the case in the newest versions).
-It stays there even if you unload the package, however you can always use
-`theme_set()` to set the default theme to something else.
-
-
-## `facet_grid`
-
-You can get a lattice-like representation using `facet_grid()` function.
-For example:
-
-
-```{r facets,fig.width=7,fig.height=3.5,echo=TRUE}
-ggplot(mpg, aes(cty, hwy)) + geom_point() + facet_grid(rows=mpg$cyl)
-```
-
-## Density plots
-
-```{r densityplots,eval=FALSE}
-data(mpg)
-ggplot(mpg, aes(cty, fill=factor(cyl))) +
-	geom_density(alpha=0.8) +
-    labs(title="Density plot",
-         subtitle="City Mileage Grouped by Number of cylinders",
-         caption="Source: mpg",
-         x="City Mileage",
-         fill="# Cylinders")
-```
-
-## Density plots
-
-```{r densityplots,echo=FALSE,fig.width=8,fig.height=4.5}
-```
-
-## Correlograms
-
-```{r correlogram,eval=FALSE}
-library(ggcorrplot)
-
-# Correlation matrix
-data(mtcars)
-corr <- round(cor(mtcars), 1)
-
-# Plot
-ggcorrplot(corr, hc.order = TRUE, 
-           type = "lower", 
-           lab = TRUE, 
-           lab_size = 3, 
-           method="circle", 
-           colors = c("tomato2", "white", "springgreen3"), 
-           title="Correlogram of mtcars", 
-           ggtheme=theme_bw)
-```
-
-## Correlograms
-
-```{r correlogram,echo=FALSE,fig.width=7,fig.height=5}
-```
-
-## Animations
-
-```
-#  ```{r, animation.hook="gifski"}
-#  for (i in 1:2) {
-#    pie(c(i %% 2, 6), col = c('red', 'yellow'), labels = NA)
-#  }
-#  ```
-```
-
-```{r, animation.hook="gifski",echo=FALSE}
-for (i in 1:2) {
-  pie(c(i %% 2, 6), col = c('red', 'yellow'), labels = NA)
-}
-```
-
-## Exercise 4/4
-
-
-
-# The gapminder data set
-
-## From data to figures
-
- * What is the message of the figure?
- * What data should be shown on a plot?
- * What relationships do you want to illustrate?
- * If it is tricky – I start with a pencil and a clean piece of paper!
-
-## Factfulness
-
-> “The world cannot be understood without numbers. But the world cannot be understood with numbers alone.”
-
-― Hans Rosling, Factfulness: *Ten Reasons We're Wrong About the World—and Why Things Are Better Than You Think*
-
-## Loading the gapminder data set
-
-```{r results="markdown"}
-library(ggplot2)
-theme_set(theme_bw())
-library(gapminder)
-knitr::kable(head(gapminder))
-```
-
-## First plot
-
-```{r fig.width=6,fig.height=4.5}
-gapminder %>% ggplot(aes(x=gdpPercap, y=lifeExp, color=year)) + geom_point()
-```
-
-## First plot
-
-```{r fig.width=6,fig.height=4.5}
-gapminder %>% ggplot(aes(x=gdpPercap, y=lifeExp, color=year)) + geom_point() +
-  scale_x_log10()
-```
-
-## First plot
-
-```{r fig.width=6,fig.height=4.5}
-gapminder %>% ggplot(aes(x=gdpPercap, y=lifeExp, color=year)) + geom_point() +
-  scale_x_log10() + scale_color_viridis_c()
-```
-
-## Select only one year
-
-```{r fig.width=6,fig.height=4.5}
-gapminder %>% filter(year==2007) %>%
-  ggplot(aes(x=gdpPercap, y=lifeExp, color="continent")) + geom_point() +
-  scale_x_log10() + scale_color_brewer(palette="Dark2")
-```
-
-## Add population data
-
-```{r fig.width=6,fig.height=4.5}
-gapminder %>% filter(year==2007) %>%
-  ggplot(aes(x=gdpPercap, y=lifeExp, size=pop, color="continent")) + geom_point() +
-  scale_x_log10() + scale_color_brewer(palette="Dark2")
-```
-
-
-## Nicer colors from gapminder
-
-```{r fig.width=6,fig.height=4.5}
-gapminder %>% filter(year==2007) %>%
-  ggplot(aes(x=gdpPercap, y=lifeExp, size=pop, color=country)) + 
-  geom_point(alpha=.7, show.legend=FALSE) +
-  scale_color_manual(values=country_colors) +
-  scale_x_log10()
-```
-
-
-## Comparison year 1952 and 2007
-
-```{r gapminder1,eval=FALSE}
-g1952 <- gapminder %>% filter(year == 1952) %>%
-  ggplot(aes(x=gdpPercap, y=lifeExp, color=continent)) + geom_point() +
-  scale_color_brewer(palette="Dark2") +
-  xlim(range(gapminder$gdpPercap)) + 
-  ylim(range(gapminder$lifeExp)) + scale_x_log10()
-
-g2007 <- gapminder %>% filter(year == 2007) %>%
-  ggplot(aes(x=gdpPercap, y=lifeExp, color=continent)) + geom_point() +
-  scale_color_brewer(palette="Dark2") +
-  xlim(range(gapminder$gdpPercap)) + 
-  ylim(range(gapminder$lifeExp)) + scale_x_log10()
-
-plot_grid(g1952, g2007)
-```
-
-
-## Comparison year 1952 and 2007
-
-```{r gapminder1,echo=FALSE,eval=TRUE,fig.width=10,fig.height=4.5}
-```
-
-## Comparison year 1952 and 2007
-
-Much easier!
-
-```{r,fig.width=8,fig.height=4}
-gapminder %>% filter(year %in% c(1952, 2007)) %>%
-  ggplot(aes(x=gdpPercap, y=lifeExp, color=continent)) +
-  scale_color_brewer(palette="Dark2") +
-  geom_point() + facet_grid(. ~ year) + scale_x_log10()
-```
-
-
-## Add population data
-
-```{r,fig.width=8,fig.height=4}
-gapminder %>% filter(year %in% c(1952, 2007)) %>%
-  ggplot(aes(x=gdpPercap, y=lifeExp, size=pop, color=continent)) +
-  scale_color_brewer(palette="Dark2") +
-  geom_point() + facet_grid(. ~ year) + scale_x_log10()
-```
-
-
-## Slope diagram
-
-```{r gapminder_slope,eval=FALSE}
-tmp <- gapminder %>% filter(year %in% c(1952, 2007)) %>% 
-  group_by(continent, year) %>% 
-  summarise(mean=mean(gdpPercap), median=median(gdpPercap))
-tmp %>% ggplot(aes(x=year, y=mean, color=continent)) + 
-  geom_point() + geom_line() + 
-  scale_y_log10() + 
-  geom_label(aes(label=continent), hjust="outward", show.legend=F) + xlim(1945, 2020)
-```
-
-## Slope diagram
-
-```{r gapminder_slope,echo=FALSE,fig.width=7}
-```
-
-## Dumbbell chart
-
-```{r gapminder_dmb,eval=FALSE}
-gapminder %>% filter(year %in% c(1952, 2007) & continent=="Europe") %>% 
-  arrange(gdpPercap, year) %>% 
-  mutate(country=factor(country, levels=unique(country))) %>%
-  ggplot(aes(x=gdpPercap, y=country, color=year)) + 
-  geom_point() + geom_line()
-```
-
-## Dumbbell chart
-
-```{r gapminder_dmb,echo=FALSE,fig.width=10,fig.height=4.5}
-```
-
-## Let's move it
-
-```{r gganim,eval=FALSE}
-library(gganimate)
-g <- gapminder %>% ggplot(aes(x=gdpPercap, y=lifeExp, size=pop, color=continent)) + 
-  geom_point(alpha=.8) + 
-  scale_color_brewer(palette="Dark2") +
-  scale_x_log10() + 
-  scale_size(range = c(2, 12)) +
-  transition_time(year) + 
-  labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
-  ease_aes("linear")
-
-animate(g, duration = 15, fps = 20, width = 800, height = 500, renderer = av_renderer())
-anim_save("gapminder.mp4")
-```
-
-**Warning:** `gganimate` has *huge* installation requirements, because you
-need a renderer library. Depending on your system, this might take a lot of
-disk space / a lot of headache. For example, using the `gifski` package
-requires you to install the rust environment. Also, including in rmarkdown
-might be problematic.
-
-## Let's move it
-
-<video controls autoplay><source src="gapminder.mp4" type="video/mp4"></video>
