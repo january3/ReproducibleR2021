@@ -1,0 +1,66 @@
+---
+title: "Practicals 03: Rmarkdown and testing"
+subtitle: "Reproducible science with R"
+author: "January Weiner"
+date: "`r Sys.Date()`"
+output:
+    html_document:
+      toc: true
+      toc_float: true
+outputoff:
+  xaringan::moon_reader:
+    self-contained: true
+    css: ["default", "files/cubi-fonts.css", "files/style.css" ]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+      ratio: "16:9"
+      beforeInit: "files/macros.js"
+toc: no
+---
+
+```{r,echo=FALSE}
+## Set default options for the knitr RMD processing
+knitr::opts_chunk$set(echo=FALSE,warning=FALSE,message=FALSE,fig.width=5,fig.height=5,cache=TRUE,autodep=TRUE, results="hide")
+```
+
+```{r libraries,cache=FALSE,echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
+library(tidyverse)
+library(cowplot)
+```
+
+
+# Exercises 1.
+
+ 1. Using the WIID data set, reproduce the example from lecture for another
+    selection of years / regions (maybe not for countries, but for regions
+    or subregions?) Can you think of another representation?
+ 2. Using the mtcars data set and any graphics system, create a box plot 
+    showing mpg depending on the number of cylinders (cyl). The latter
+    should be treated as a category, not a continuous variable! (in ggplot:
+    use the `geom_boxplot()` geom).
+
+# Exercises 2.
+
+ 3. Load the [transcriptomics_results.csv](https://raw.githubusercontent.com/january3/ReproducibleR2021/master/Datasets/transcriptomics_results.csv) data set. 
+    This is a data set derived from
+    [this](https://www.nature.com/articles/s41598-019-56994-8) paper,
+    showing transcriptomic responses to the vaccination at different
+    timepoints. Using whatever tools (base R, `ggplot() + geom_point()`)
+    plot the log fold changes on day 1 vs log fold changes on day 2. 
+ 4. Create an additional column to the transcriptomic data set. Fill it with
+    either "TRUE" (a gene is significant on day 1) or "FALSE" (a gene is not
+    significant). Define significance in terms of log fold change *and*
+    p-value (i.e., a gene is significant if the absolute lfc is above a
+    threshold *and* p-value is below a threshold).
+ 5. Create a volcano plot (i.e., log fold change on x axis, -log10(p-value)
+    on y axis) showing in red genes which are significant on day 1. (for
+    example, with ggplot2, use the color esthetics with the "sign" column
+    you created in the previous step)
+ 6. Using a similar approach, color (or symbol) code genes which are:
+     * not significant on Day 1 *and* Day 2
+     * significant only on Day 1
+     * significant only on Day 2
+     * significant on both days
+
